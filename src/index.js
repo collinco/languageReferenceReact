@@ -16,36 +16,27 @@ const buttonContainerStyle = {
     left: '50px',
 }
 
-///////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
 
-class Clock extends React.Component {
+class LandingPage extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {date: new Date()};
+      this.state = { 'languageSelected' : "javascript"};
     }
   
     componentDidMount() {
-      this.timerID = setInterval(
-        () => this.tick(),
-        1000
-      );
+      
     }
   
     componentWillUnmount() {
-      clearInterval(this.timerID);
+      
     }
-  
-    tick() {
-      this.setState({
-        date: new Date()
-      });
-    }
-  
+
     render() {
       return (
         <div>
-          <h1>Hello, world!</h1>
-          <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+          <LanguageButtons language={this.state.languageSelected}/>
+          <LanguageContent language={this.state.languageSelected} />
         </div>
       );
     }
@@ -53,48 +44,75 @@ class Clock extends React.Component {
 
 /////////////////////////////////////////////////////////
 
-const Ree = () => {
 
-    return <div>
-        <Clock></Clock>
-        <div style={buttonContainerStyle}>
-            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Javascript</button>
-            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Typescript</button>
-            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Golang</button>
-        </div>
-        <SideBtns/>
+const LanguageButtons = (props) => {
+    console.log('props', props)
+    return   <div style={buttonContainerStyle}>
+        <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Javascript</button>
+        <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Typescript</button>
+        <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Golang</button>
     </div>
 }
 
-
-const SideBtns = () => {
+const LanguageContent = (props) => {
+    console.log('props', props)
     return <div className="container">
-        <Index/>
+        <h1>Basic Types</h1>
+        <TopicGists topic="basicTypes" language={props.language}/>
     </div>
 }
 
-const Index = () => {
-    const gists = [
-        {
-            "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
-            "fileName" : 'ts_basic_types.ts' 
-        },
-        {
-            "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
-            "fileName" : 'go_basic_types.go'
-        },
-        {
-            "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
-            "fileName" : 'js_basic_types.js'
+const TopicGists = (props) => {
+    console.log('props', props)
+
+    const gists = {
+        "javascript" : [
+            // {
+            //     "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
+            //     "fileName" : 'ts_basic_types.ts',
+            //     "topic" : 'basicTypes'
+            // },
+            // {
+            //     "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
+            //     "fileName" : 'go_basic_types.go',
+            //     "topic" : 'basicTypes'
+            // },
+            {
+                "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
+                "fileName" : 'js_basic_types.js',
+                "topic" : 'basicTypes'
+            }
+        ],
+        "golang" : [
+            {
+                "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
+                "fileName" : 'ts_basic_types.ts',
+                "topic" : 'basicTypes'
+            },
+            {
+                "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
+                "fileName" : 'go_basic_types.go',
+                "topic" : 'basicTypes'
+            },
+            {
+                "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
+                "fileName" : 'js_basic_types.js',
+                "topic" : 'basicTypes'
+            }
+        ],
+
+    }
+
+    const gistElements = gists[props.language].map((gist) => {
+        if (gist.topic === props.topic){
+            return <EmbeddedGist key={gist.gistId} gist={gist.gistId} file={gist.fileName}></EmbeddedGist>
         }
-    ]
-    const gistElements = gists.map((gist) =>
-      <EmbeddedGist key={gist.gistId} gist={gist.gistId} file={gist.fileName}></EmbeddedGist>
-    );
+
+    });
 
     return  <div className="row">
         {gistElements}    
     </div>
 }
 
-ReactDOM.render(<Ree />, document.getElementById("index"));
+ReactDOM.render(<LandingPage />, document.getElementById("index"));

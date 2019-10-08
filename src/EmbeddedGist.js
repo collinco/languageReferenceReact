@@ -56,7 +56,7 @@ class EmbeddedGist extends Component {
     if (this.state.loading) {
       return <div>loading...</div>;
     } else {
-      return <div  className="col-4" dangerouslySetInnerHTML={{__html: this.state.src}} />;
+      return <div  className="col-12" dangerouslySetInnerHTML={{__html: this.state.src}} />;
     }
   }
 }
