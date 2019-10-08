@@ -21,7 +21,13 @@ const buttonContainerStyle = {
 class LandingPage extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { 'languageSelected' : "javascript"};
+      this.state = { 'language' : "javascript"};
+      this.handleLanguageChange = this.handleLanguageChange.bind(this);
+    }
+  
+    handleLanguageChange(languageClicked) {
+        console.log('languageClicked', languageClicked)
+        this.setState({language: languageClicked});
     }
   
     componentDidMount() {
@@ -35,8 +41,8 @@ class LandingPage extends React.Component {
     render() {
       return (
         <div>
-          <LanguageButtons language={this.state.languageSelected}/>
-          <LanguageContent language={this.state.languageSelected} />
+          <LanguageButtons language={this.state.language} onLanguageChange={this.handleLanguageChange}/>
+          <LanguageContent language={this.state.language} />
         </div>
       );
     }
@@ -44,9 +50,16 @@ class LandingPage extends React.Component {
 
 class LanguageButtons extends React.Component {
     constructor(props) {
-      super(props);
+        super(props);
     //   this.state = { 'languageSelected' : "javascript"};
+        this.handleChange = this.handleChange.bind(this);
+
     }
+
+    handleChange(e) {
+        console.log('e', e)
+        this.props.onLanguageChange(e);
+    }    
   
     componentDidMount() {
       
@@ -59,9 +72,9 @@ class LanguageButtons extends React.Component {
     render() {
       return (
         <div style={buttonContainerStyle}>
-            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Javascript</button>
-            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Typescript</button>
-            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Golang</button>
+            <button type="button" className="btn btn-info" style={buttonStyle} onClick={() => { this.handleChange('javascript')}}>Javascript</button>
+            <button type="button" className="btn btn-info" style={buttonStyle} onClick={() => { this.handleChange('typescript')}}>Typescript</button>
+            <button type="button" className="btn btn-info" style={buttonStyle} onClick={() => { this.handleChange('golang')}}>Golang</button>
         </div>
       );
     }
@@ -90,48 +103,33 @@ const TopicGists = (props) => {
     console.log('TopicGists props', props)
 
     const gists = {
-        "javascript" : [
-            // {
-            //     "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
-            //     "fileName" : 'ts_basic_types.ts',
-            //     "topic" : 'basicTypes'
-            // },
-            // {
-            //     "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
-            //     "fileName" : 'go_basic_types.go',
-            //     "topic" : 'basicTypes'
-            // },
+        javascript : [
             {
                 "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
                 "fileName" : 'js_basic_types.js',
                 "topic" : 'basicTypes'
             }
         ],
-        "golang" : [
+        typescript : [
             {
                 "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
                 "fileName" : 'ts_basic_types.ts',
                 "topic" : 'basicTypes'
-            },
+            }
+        ],
+        golang : [
             {
                 "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
                 "fileName" : 'go_basic_types.go',
                 "topic" : 'basicTypes'
-            },
-            {
-                "gistId" : 'hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1',
-                "fileName" : 'js_basic_types.js',
-                "topic" : 'basicTypes'
             }
         ],
-
     }
 
-    const gistElements = gists[props.language].map((gist) => {
+    var gistElements = gists[props.language].map((gist) => {
         if (gist.topic === props.topic){
-            return <EmbeddedGist key={gist.gistId} gist={gist.gistId} file={gist.fileName}></EmbeddedGist>
+            return <EmbeddedGist key={gist.fileName} gist={gist.gistId} file={gist.fileName}></EmbeddedGist>
         }
-
     });
 
     return  <div className="row">
