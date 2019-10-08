@@ -42,20 +42,44 @@ class LandingPage extends React.Component {
     }
   }
 
+class LanguageButtons extends React.Component {
+    constructor(props) {
+      super(props);
+    //   this.state = { 'languageSelected' : "javascript"};
+    }
+  
+    componentDidMount() {
+      
+    }
+  
+    componentWillUnmount() {
+      
+    }
+
+    render() {
+      return (
+        <div style={buttonContainerStyle}>
+            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Javascript</button>
+            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Typescript</button>
+            <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Golang</button>
+        </div>
+      );
+    }
+  }
 /////////////////////////////////////////////////////////
 
 
-const LanguageButtons = (props) => {
-    console.log('props', props)
-    return   <div style={buttonContainerStyle}>
-        <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Javascript</button>
-        <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Typescript</button>
-        <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Golang</button>
-    </div>
-}
+// const LanguageButtons = (props) => {
+//     console.log('LanguageButtons props', props)
+//     return   <div style={buttonContainerStyle}>
+//         <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Javascript</button>
+//         <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Typescript</button>
+//         <button type="button" className="btn btn-info" style={buttonStyle}  onClick={() => alert('click')}>Golang</button>
+//     </div>
+// }
 
 const LanguageContent = (props) => {
-    console.log('props', props)
+    console.log('LanguageContent props', props)
     return <div className="container">
         <h1>Basic Types</h1>
         <TopicGists topic="basicTypes" language={props.language}/>
@@ -63,7 +87,7 @@ const LanguageContent = (props) => {
 }
 
 const TopicGists = (props) => {
-    console.log('props', props)
+    console.log('TopicGists props', props)
 
     const gists = {
         "javascript" : [
