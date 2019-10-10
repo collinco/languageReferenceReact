@@ -74,7 +74,7 @@ class LandingPage extends React.Component {
 					language={this.state.language}
 					onLanguageChange={this.handleLanguageChange}
 				/>
-				<LanguageContent language={this.state.language} />
+				<GistContainer language={this.state.language} />
 			</div>
 		);
 	}
@@ -137,7 +137,7 @@ class LanguageContent extends React.Component {
 		super(props);
 		this.hideGist = this.hideGist.bind(this);
 		this.showGist = this.showGist.bind(this);
-		this.state = { hiddenGists: { basicTypes: true } };
+		this.state = { hiddenGists: {} };
 	}
 
 	hideGist(e) {
@@ -160,24 +160,60 @@ class LanguageContent extends React.Component {
 		let x;
 		let y;
 
-		if (this.state.hiddenGists["basicTypes"]) {
-			x = <span onClick={() => this.hideGist("basicTypes")}>⬇️</span>;
+		if (this.state.hiddenGists[this.props.topicName]) {
+			x = <span onClick={() => this.hideGist(this.props.topicName)}>⬇️</span>;
 		} else {
-			x = <span onClick={() => this.showGist("basicTypes")}>⬆️</span>;
+			x = <span onClick={() => this.showGist(this.props.topicName)}>⬆️</span>;
 		}
 
-		if (this.state.hiddenGists["basicTypes"] === true) {
-			y = <TopicGists topic="basicTypes" language={this.props.language} />;
+		if (this.state.hiddenGists[this.props.topicName] === true) {
+			y = (
+				<TopicGists
+					topic={this.props.topicName}
+					language={this.props.language}
+				/>
+			);
 		}
 
 		return (
-			<div style={containterStyle} className="container">
-				<h1 style={headerStyle}>Basic Types {x}</h1>
+			<div>
+				<h1 style={headerStyle}>
+					{this.props.displayName} {x}
+				</h1>
 				{y}
 			</div>
 		);
 	}
 }
+
+const GistContainer = props => {
+	const gistTopics = [
+		{
+			topicName: "basicTypes",
+			displayName: "Basic Types"
+		},
+		{
+			topicName: "varDeclaration",
+			displayName: "Variable Declarations"
+		}
+	];
+
+	const gistTopicsElements = gistTopics.map(topicObj => {
+		return (
+			<LanguageContent
+				language={props.language}
+				displayName={topicObj.displayName}
+				topicName={topicObj.topicName}
+			/>
+		);
+	});
+
+	return (
+		<div style={containterStyle} className="container">
+			{gistTopicsElements}
+		</div>
+	);
+};
 
 /////////////////////////////////////////////////////////
 
@@ -188,6 +224,11 @@ const TopicGists = props => {
 				gistId: "hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1",
 				fileName: "js_basic_types.js",
 				topic: "basicTypes"
+			},
+			{
+				gistId: "hippohipporhino/92153976220160cd1e7a88820babb38b",
+				fileName: "js_var_declaration.js",
+				topic: "varDeclaration"
 			}
 		],
 		typescript: [
@@ -195,6 +236,11 @@ const TopicGists = props => {
 				gistId: "hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1",
 				fileName: "ts_basic_types.ts",
 				topic: "basicTypes"
+			},
+			{
+				gistId: "hippohipporhino/92153976220160cd1e7a88820babb38b",
+				fileName: "ts_basic_types.ts",
+				topic: "varDeclaration"
 			}
 		],
 		golang: [
@@ -202,11 +248,16 @@ const TopicGists = props => {
 				gistId: "hippohipporhino/286ec9fd570b151ea25cad8d56cdefb1",
 				fileName: "go_basic_types.go",
 				topic: "basicTypes"
+			},
+			{
+				gistId: "hippohipporhino/92153976220160cd1e7a88820babb38b",
+				fileName: "go_var_declaration.go",
+				topic: "varDeclaration"
 			}
 		]
 	};
 
-	var gistElements = gists[props.language].map(gist => {
+	const gistElements = gists[props.language].map(gist => {
 		if (gist.topic === props.topic) {
 			return (
 				<EmbeddedGist
